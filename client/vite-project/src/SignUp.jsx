@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './SignUp.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 function SignUp() {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const navigate = useNavigate();
   // const [formData, setFormData] = useState({
   //   firstName: '',
   //   lastName: '',
@@ -24,10 +25,13 @@ function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Form submitted:', formData);
+    // console.log('Form submitted:', formData);
     // You can add your API call or form validation logic here
-    axios.post('', {name, email, password})
-    .then(result => console.log(result))
+    axios.post('http://localhost:3001/register', {name, email, password})
+    .then(result => {
+      console.log(result)
+      navigate('/login')
+    })
     .catch(err => console.log(err))
   };
 
