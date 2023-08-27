@@ -1,24 +1,36 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import axios from 'axios';
 
 function Login() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const navigate = useNavigate();
+//   const [formData, setFormData] = useState({
+//     email: '',
+//     password: '',
+//   });
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+//   const handleChange = (event) => {
+//     const { name, value } = event.target;
+//     setFormData((prevData) => ({
+//       ...prevData,
+//       [name]: value,
+//     }));
+//   };
 
-  const handleSubmit = (event) => {
+const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Login submitted:', formData);
-    // You can add your authentication logic here
+    // console.log('Form submitted:', formData);
+    axios.post('http://localhost:3001/login', { email, password})
+    .then(result => {
+      console.log(result)
+     if (result.data === "Success") {
+        navigate('/home')
+     }
+    })
+    .catch(err => console.log(err))
   };
 
   return (
@@ -30,8 +42,8 @@ function Login() {
           <input
             type="email"
             name="email"
-            value={formData.email}
-            onChange={handleChange}
+            // value={formData.email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </label>
         <br />
@@ -40,8 +52,8 @@ function Login() {
           <input
             type="password"
             name="password"
-            value={formData.password}
-            onChange={handleChange}
+            // value={formData.password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </label>
         <br />
